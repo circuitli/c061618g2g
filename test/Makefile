@@ -25,7 +25,7 @@ COMPILE_ARGS += -Y .v
 # Fallback to your local formal project copy if PDK_ROOT isn't defined on Windows
 #PDK_ROOT ?= $(PWD)/formal
 RAW_PDK_PRIMITIVES = $(PDK_ROOT)/gf180mcuD/libs.ref/gf180mcu_fd_sc_mcu7t5v0/verilog/primitives.v
-RAW_PDK_CELLS = $(PDK_ROOT)/gf180mcuD/libs.ref/gf180mcu_fd_sc_mcu7t5v0/verilog/gf180mcu_fd_sc_mcu7t5v0.v
+VERILOG_SOURCES += $(PDK_ROOT)/gf180mcuD/libs.ref/gf180mcu_fd_sc_mcu7t5v0/verilog/gf180mcu_fd_sc_mcu7t5v0.pg.v
 
 ifeq ($(SIM),verilator)
     # 2. Feed the search search paths directly into Verilator's native -y system.
@@ -81,7 +81,7 @@ else ifeq ($(SIM),icarus)
         # Gate level simulation:
         SIM_BUILD		= sim_build/gl
         COMPILE_ARGS    += -DGL_TEST
-        COMPILE_ARGS    += -DFUNCTIONAL -Dfunctional_primitive -Wno-portbind
+        COMPILE_ARGS    += -DFUNCTIONAL -Dfunctional_primitive
         COMPILE_ARGS    += -DSIM
 
         # this gets copied in by the GDS action workflow

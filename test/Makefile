@@ -25,7 +25,7 @@ COMPILE_ARGS += -Y .v
 # Fallback to your local formal project copy if PDK_ROOT isn't defined on Windows
 #PDK_ROOT ?= $(PWD)/formal
 RAW_PDK_PRIMITIVES = $(PDK_ROOT)/gf180mcuD/libs.ref/gf180mcu_fd_sc_mcu7t5v0/verilog/primitives.v
-RAW_PDK_CELLs = $(PDK_ROOT)/gf180mcuD/libs.ref/gf180mcu_fd_sc_mcu7t5v0/verilog/gf180mcu_fd_sc_mcu7t5v0.v
+RAW_PDK_CELLS = $(PDK_ROOT)/gf180mcuD/libs.ref/gf180mcu_fd_sc_mcu7t5v0/verilog/gf180mcu_fd_sc_mcu7t5v0.v
 
 ifeq ($(SIM),verilator)
     # 2. Feed the search search paths directly into Verilator's native -y system.
@@ -73,8 +73,8 @@ else ifeq ($(SIM),icarus)
         # Append the path to your macro's internal gate-level netlist file
         #VERILOG_SOURCES += $(wildcard $(PWD)/../macros/nl/*.v)
 
-        VERILOG_SOURCES += $(RAW_PDK_CELLS)
         VERILOG_SOURCES += $(RAW_PDK_PRIMITIVES)
+        VERILOG_SOURCES += $(RAW_PDK_CELLS)
 
         #VERILOG_SOURCES += $(CLEAN_LOCAL_CELLS)
     else
@@ -92,9 +92,9 @@ else ifeq ($(SIM),icarus)
 
         # 3. Strip the raw PDK path from the sources and append our clean local version instead
         #VERILOG_SOURCES := $(filter-out $(RAW_PDK_CELLS) %sg13g2_stdcell.v, $(VERILOG_SOURCES))
-        #VERILOG_SOURCES += $(CLEAN_LOCAL_CELLS
-        VERILOG_SOURCES += $(RAW_PDK_CELLS)
+        #VERILOG_SOURCES += $(CLEAN_LOCAL_CELLS)
         VERILOG_SOURCES += $(RAW_PDK_PRIMITIVES)
+        VERILOG_SOURCES += $(RAW_PDK_CELLS)
     endif
 endif
 

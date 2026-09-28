@@ -24,7 +24,7 @@ COMPILE_ARGS += -Y .v
 
 # Fallback to your local formal project copy if PDK_ROOT isn't defined on Windows
 #PDK_ROOT ?= $(PWD)/formal
-RAW_PDK_PRIMITIVES =  $(PDK_ROOT)/gf180mcuD/libs.ref/gf180mcu_fd_sc_mcu7t5v0/verilog/primitives.v
+RAW_PDK_PRIMITIVES = $(PDK_ROOT)/gf180mcuD/libs.ref/gf180mcu_fd_sc_mcu7t5v0/verilog/primitives.v
 RAW_PDK_CELLs = $(PDK_ROOT)/gf180mcuD/libs.ref/gf180mcu_fd_sc_mcu7t5v0/verilog/gf180mcu_fd_sc_mcu7t5v0.v
 
 ifeq ($(SIM),verilator)
@@ -66,7 +66,7 @@ else ifeq ($(SIM),icarus)
         SIM_BUILD		= sim_build/rtl
         
         #2. Append compilation macros
-        COMPILE_ARGS += -DFUNCTIONAL -gno-specify
+        COMPILE_ARGS += -DFUNCTIONAL -Dfunctional_primitive -gno-specify
 
         VERILOG_SOURCES += $(addprefix $(SRC_DIR)/,$(PROJECT_SOURCES))
 
@@ -81,7 +81,7 @@ else ifeq ($(SIM),icarus)
         # Gate level simulation:
         SIM_BUILD		= sim_build/gl
         COMPILE_ARGS    += -DGL_TEST
-        COMPILE_ARGS    += -DFUNCTIONAL
+        COMPILE_ARGS    += -DFUNCTIONAL -Dfunctional_primitive
         COMPILE_ARGS    += -DSIM
 
         # this gets copied in by the GDS action workflow

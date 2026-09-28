@@ -42,7 +42,7 @@ ifeq ($(SIM),verilator)
     # 3. CRITICAL FLAGS: Add -y to let Verilator discover your module dependencies,
     # and turn off MODDUP to ignore duplicate standard cell models if they overlap.
     COMPILE_ARGS += --timing -y $(PWD) -y $(PWD)/../src
-    COMPILE_ARGS += -Wno-fatal -Wno-UNOPTFLAT -Wno-BLKANDNBLK -Wno-MODDUP
+    COMPILE_ARGS += -Wno-fatal -Wno-UNOPTFLAT -Wno-BLKANDNBLK -Wno-MODDUP -Wno-PINMISSING
 else ifeq ($(SIM),icarus)
     COMPILE_ARGS += -DCOCOTB_SIM
     # This allows Icarus to load real nanosecond timing data from the PDK.

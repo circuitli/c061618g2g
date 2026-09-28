@@ -121,11 +121,15 @@ jobs:
           # 2. Clone the full repository structure to a temporary folder
           git clone --branch main --depth 1 --recurse-submodules https://github.com/google/gf180mcu-pdk.git "$TEMP_CLONE_DIR"
     
-          echo "📁 Moving internal process folder to eliminate double nesting..."
-          # 3. Move the internal process folder directly to where LibreLane expects it
-          # This extracts 'gf180mcuD/gf180mcuD' straight to 'pdk/gf180mcuD'
-          mv "$TEMP_CLONE_DIR/gf180mcuD" "$TARGET_PDK_DIR/"
-          
+          echo "📁 Moving internal process folders to match expected tool layout..."
+          # 3. Pull the targets out of their 'libraries/<name>/latest' submodules
+          # and map them cleanly straight into 'pdk/gf180mcuD/libs.ref/<name>'
+    
+          mv "$TEMP_CLONE_DIR/libraries/gf180mcu_fd_pr/latest" "$TARGET_PDK_DIR/gf180mcuD/libs.ref/gf180mcu_fd_pr"
+          mv "$TEMP_CLONE_DIR/libraries/gf180mcu_fd_sc_mcu7t5v0/latest" "$TARGET_PDK_DIR/gf180mcuD/libs.ref/gf180mcu_fd_sc_mcu7t5v0"
+          mv "$TEMP_CLONE_DIR/libraries/gf180mcu_fd_sc_mcu9t5v0/latest" "$TARGET_PDK_DIR/gf180mcuD/libs.ref/gf180mcu_fd_sc_mcu9t5v0"
+          mv "$TEMP_CLONE_DIR/libraries/gf180mcu_fd_io/latest" "$TARGET_PDK_DIR/gf180mcuD/libs.ref/gf180mcu_fd_io"
+    
           # 4. Clean up the empty temporary download directory
           rm -rf "$TEMP_CLONE_DIR"
           

@@ -122,8 +122,8 @@ jobs:
           git clone --branch main --depth 1 --recurse-submodules https://github.com/google/gf180mcu-pdk.git "$TEMP_CLONE_DIR"
     
           echo "📁 Moving internal process folders to match expected tool layout..."
-          # 3. Pull the targets out of their 'libraries/<name>/latest' submodules
-          # and map them cleanly straight into 'pdk/gf180mcuD/libs.ref/<name>'
+          # 3. Explicitly create the parent directory structure and move targets
+          mkdir -p "$TARGET_PDK_DIR/gf180mcuD/libs.ref"
     
           mv "$TEMP_CLONE_DIR/libraries/gf180mcu_fd_pr/latest" "$TARGET_PDK_DIR/gf180mcuD/libs.ref/gf180mcu_fd_pr"
           mv "$TEMP_CLONE_DIR/libraries/gf180mcu_fd_sc_mcu7t5v0/latest" "$TARGET_PDK_DIR/gf180mcuD/libs.ref/gf180mcu_fd_sc_mcu7t5v0"

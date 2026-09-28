@@ -1,1 +1,67 @@
-../deps/c061618g2/test/tb.v
+`default_nettype none
+`timescale 1ns / 1ps
+
+/* This testbench just instantiates the module and makes some convenient wires
+   that can be driven / tested by the cocotb test.py.
+*/
+module tb ();
+
+  // Dump the signals to a FST file. You can view it with gtkwave or surfer.
+  initial begin
+    $dumpfile("tb.fst");
+    $dumpvars(0, tb);
+
+    // Do NOT place a fixed delay line here! 
+    // Leaving it open lets the logging engine track your pins 
+    // for the full duration of your test.py execution loops.
+    //#1;
+  end
+
+  // Testbench signals matching the standard Tiny Tapeout interface layout
+  reg clk;
+  reg rst_n;
+  reg ena;
+  reg [7:0] ui_in;
+  reg [7:0] uio_in;
+  wire [7:0] uo_out;
+  wire [7:0] uio_out;
+  wire [7:0] uio_oe;
+`ifdef GL_TEST
+  wire VPWR = 1'b1;
+  wire VGND = 1'b0;
+`endif
+
+  // =========================================================================
+  // INITIAL BASELINE DRIVERS
+  // =========================================================================
+  initial begin
+      // Set up the safe baseline environment states
+      uio_in = 8'hFF;   // All bidirectionals high to drop system_disabled to 0
+      ui_in  = 8'h00;   // Baseline address lines grounded to $0000
+  end
+
+  // Instantiate the actual user module under test (UUT)
+`ifdef GL_TEST
+  // Instantiate the wrapper name that the automated script injected into the netlist
+  // (Change 'tt_um_c061618g2_bypass' to match the top_module name in THE info.yaml)
+  tt_um_c061618g2_bypass user_project (
+`else
+  // Standard RTL simulation uses your raw custom name
+  c061618g2 user_project (
+`endif
+// Include power ports for the Gate Level test:
+`ifdef GL_TEST
+      .VPWR(VPWR),
+      .VGND(VGND),
+`endif
+      .ui_in  (ui_in),    // Dedicated inputs
+      .uo_out (uo_out),   // Dedicated outputs
+      .uio_in (uio_in),   // Bidirectional IOs: Input path
+      .uio_out(uio_out),  // Bidirectional IOs: Output path
+      .uio_oe (uio_oe),   // Bidirectional IOs: Output Enable path (active high)
+      .ena    (ena),      // Design enable signal (always high when selected)
+      .clk    (clk),      // Global clock signal
+      .rst_n  (rst_n)     // Global active-low asynchronous reset
+  );
+
+endmodule

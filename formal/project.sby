@@ -103,7 +103,7 @@ output(f"read -sv {define_flag} {workspace_clean}/../deps/c061618g2/formal/modul
 # as ideal structural blackboxes, bypassing the PDK file completely.
 # -------------------------------------------------------------------------
 #hierarchy -generate sg13g2_* O:X O:Y O:Q I:A I:B I:D I:G I:S I:I I:A0 I:A1
-##hierarchy -top c061618g2tr
+##hierarchy -top c061618g2
 hierarchy -top c061618g2 -purge_lib
 proc
 
@@ -195,8 +195,8 @@ select -clear
 
 # Standard formal elaboration mapping without port splitting
 #flatten
-#prep -top c061618g2tr -nordff
-prep -top c061618g2tr
+#prep -top c061618g2 -nordff
+prep -top c061618g2
 ##chformal -early
 ##opt_clean
 

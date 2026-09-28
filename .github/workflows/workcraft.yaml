@@ -104,7 +104,7 @@ jobs:
             #touch macros/.placeholder
           fi
 
-      - name: Fetch and Link IHP PDK dev Branch Directly
+      - name: Fetch and Link PDK dev Branch Directly
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
@@ -119,19 +119,19 @@ jobs:
           
           echo "📥 Performing native source clone..."
           # 2. Clone the full repository structure to a temporary folder
-          git clone --branch dev --depth 1 --recurse-submodules https://github.com/IHP-GmbH/IHP-Open-PDK.git "$TEMP_CLONE_DIR"
-          
+          git clone --branch dev --depth 1 --recurse-submodules https://github.com/google/gf180mcu-pdk.git "$TEMP_CLONE_DIR"
+    
           echo "📁 Moving internal process folder to eliminate double nesting..."
           # 3. Move the internal process folder directly to where LibreLane expects it
-          # This extracts 'ihp-pdk_repo/ihp-sg13g2' straight to 'pdk/ihp-sg13g2'
-          mv "$TEMP_CLONE_DIR/ihp-sg13g2" "$TARGET_PDK_DIR/"
+          # This extracts 'gf180mcuD/gf180mcuD' straight to 'pdk/gf180mcuD'
+          mv "$TEMP_CLONE_DIR/gf180mcuD" "$TARGET_PDK_DIR/"
           
           # 4. Clean up the empty temporary download directory
           rm -rf "$TEMP_CLONE_DIR"
           
           # 5. Export environment tracking configurations
           echo "PDK_ROOT=$TARGET_PDK_DIR" >> $GITHUB_ENV
-          echo "PDK=ihp-sg13g2" >> $GITHUB_ENV
+          echo "PDK=gf180mcuD" >> $GITHUB_ENV
 
       - name: Install OSS CAD Suite
         uses: YosysHQ/setup-oss-cad-suite@v4
@@ -202,7 +202,7 @@ jobs:
       # This runs safely inside the local runner directory context without breaking
       # global paths, making the library 100% parseable by Yosys.
       # =========================================================================
-      - name: Extract and Clean IHP SG13G2 Standard Cell Library
+      - name: Extract and Clean Standard Cell Library
         working-directory: ${{ github.workspace }}/workspace_workcraft
         if: false
         run: |
@@ -223,7 +223,6 @@ jobs:
           sed -i '/^[[:space:]]*initial[[:space:]]/d' ./sg13g2_stdcell_clean.v
           sed -i '/^[[:space:]]*assign[[:space:]]/d' ./sg13g2_stdcell_clean.v
           sed -i 's/#[0-9]\+//g' ./sg13g2_stdcell_clean.v
-
 
       - name: Run Workcraft Verification
         id: workcraft
@@ -246,9 +245,9 @@ jobs:
           fi
           echo "🎯 Found macros: $MACRO_FILES"
 
-          echo "📦 Merging IHP SG13G2 technology library with gate netlist..."
+          echo "📦 Merging technology library with gate netlist..."
           # Paths to the files
-          LIB_FILE="./sg13g2_stdcell_clean.v"
+          #LIB_FILE="./sg13g2_stdcell_clean.v"
           # 2. Use $GITHUB_WORKSPACE to target your repository's test directory exactly
           # 2. Use find to grab the netlist from your already downloaded gds_drop folder
           echo "🔎 Locating the netlist file inside downloaded artifacts..."

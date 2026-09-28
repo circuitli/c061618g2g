@@ -4,7 +4,7 @@
 	<!-- DYNAMIC PDK PATH INJECTION                                          -->
 	<!-- Maps the standard slow-corner timing models from your PDK root      -->
 	<!-- =================================================================== -->
-	<var name="CircuitSettings.gateLibrary" value="${PDK_ROOT}/ihp-sg13g2/libs.ref/sg13g2_stdcell/lib/sg13g2_stdcell_slow.lib"/>
+	<var name="CircuitSettings.gateLibrary" value="$(PDK_ROOT)/gf180mcuD/libs.ref/gf180mcu_fd_sc_mcu7t5v0/verilog/gf180mcu_fd_sc_mcu7t5v0.v $(PDK_ROOT)/gf180mcuD/libs.ref/gf180mcu_fd_sc_mcu7t5v0/verilog/primitives.v"/>
 	<var name="CircuitSettings.calcDelay" value="true"/>
 
 	<!-- =================================================================== -->

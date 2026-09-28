@@ -30,7 +30,7 @@
   "// STRICT PROCESS-SPECIFIC OVERRIDES ONLY": "",
   "// -------------------------------------------------------------------------": "",
   "pdk::ihp-sg13g2": {
-    "VERILOG_DEFINES": [ "IHP_SG13G2" ],
+    "VERILOG_DEFINES": [ "GF180MCU" ],
     "macro_x": 22.08,
     "macro_y": 102.06,
     "macro_height": "expr::(3.78 * 12)",

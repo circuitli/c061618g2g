@@ -74,17 +74,17 @@ jobs:
           fi
 
       - name: Build GDS
-        uses: TinyTapeout/tt-gds-action@ttihp26b
+        uses: TinyTapeout/tt-gds-action@ttgf26c
         with:
-          pdk: ihp-sg13g2
+          pdk: gf180mcuD
 
   precheck:
     needs: gds
     runs-on: ubuntu-24.04
     steps:
       - name: Run Tiny Tapeout Precheck
-        uses: TinyTapeout/tt-gds-action/precheck@ttihp26b
-          
+        uses: TinyTapeout/tt-gds-action/precheck@ttgf26c
+        
   gl_test:
     needs: gds
     runs-on: ubuntu-24.04
@@ -131,7 +131,7 @@ jobs:
           fi
 
       - name: GL test
-        uses: TinyTapeout/tt-gds-action/gl_test@ttihp26b
+        uses: TinyTapeout/tt-gds-action/gl_test@ttgf26c
 
   viewer:
     needs: [gds]
@@ -140,6 +140,5 @@ jobs:
       pages: write # to deploy to Pages
       id-token: write # to verify the deployment originates from an appropriate source
     steps:
-      - uses: TinyTapeout/tt-gds-action/viewer@ttihp26b
-
+      - uses: TinyTapeout/tt-gds-action/viewer@ttgf26c
   

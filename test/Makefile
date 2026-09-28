@@ -24,17 +24,20 @@ COMPILE_ARGS += -Y .v
 
 # Fallback to your local formal project copy if PDK_ROOT isn't defined on Windows
 #PDK_ROOT ?= $(PWD)/formal
-RAW_PDK_CELLS = $(PDK_ROOT)/ihp-sg13g2/libs.ref/sg13g2_stdcell/verilog/sg13g2_stdcell.v
+RAW_PDK_PRIMITIVES =  $(PDK_ROOT)/gf180mcuD/libs.ref/gf180mcu_fd_sc_mcu7t5v0/verilog/primitives.v
+RAW_PDK_CELLs = $(PDK_ROOT)/gf180mcuD/libs.ref/gf180mcu_fd_sc_mcu7t5v0/verilog/gf180mcu_fd_sc_mcu7t5v0.v
 
 ifeq ($(SIM),verilator)
     # 2. Feed the search search paths directly into Verilator's native -y system.
     # This instructs Verilator to look across the entire OpenLane PDK directory tree 
     # to automatically locate sg13g2.v and resolve the decoupling cells on its own.
     COMPILE_ARGS += -y $(PWD) -y $(PWD)/../src
-    COMPILE_ARGS += -y /home/runner/.openlane/pdk/ihp-sg13g2/libs.ref/sg13g2/verilog
-    COMPILE_ARGS += -y /home/runner/.openlane/pdk/ihp-sg13g2/libs.ref/sg13g2_stdcell/verilog
-    COMPILE_ARGS += -y /opt/pdk/ihp-sg13g2/libs.ref/sg13g2/verilog
+    COMPILE_ARGS += -y $(PDK_ROOT)/gf180mcuD/libs.ref/gf180mcu_fd_sc_mcu7t5v0/verilog
+    COMPILE_ARGS += -y /home/runner/.openlane/pdk/gf180mcuD/libs.ref/gf180mcu_fd_sc_mcu7t5v0/verilog
+    COMPILE_ARGS += -v $(PDK_ROOT)/gf180mcuD/libs.ref/gf180mcu_fd_pr/verilog/gf180mcu_fd_pr.v
     COMPILE_ARGS += -v $(RAW_PDK_CELLS)
+    COMPILE_ARGS += -v $(RAW_PDK_PRIMITIVES)
+
 
     # 3. CRITICAL FLAGS: Add -y to let Verilator discover your module dependencies,
     # and turn off MODDUP to ignore duplicate standard cell models if they overlap.
@@ -56,7 +59,7 @@ else ifeq ($(SIM),icarus)
     CLEAN_LOCAL_CELLS = $(CURDIR)/sg13g2_stdcell_functional.v
 
     # 1. Create a local functional copy with the problematic lines deleted
-    $(shell sed '/ifnone/d' $(RAW_PDK_CELLS) > $(CLEAN_LOCAL_CELLS))
+    #$(shell sed '/ifnone/d' $(RAW_PDK_CELLS) > $(CLEAN_LOCAL_CELLS))
 
     ifneq ($(GATES),yes)
         # RTL simulation:
@@ -70,7 +73,10 @@ else ifeq ($(SIM),icarus)
         # Append the path to your macro's internal gate-level netlist file
         VERILOG_SOURCES += $(wildcard $(PWD)/../macros/nl/*.v)
 
-        VERILOG_SOURCES += $(CLEAN_LOCAL_CELLS)
+        VERILOG_SOURCES += $(RAW_PDK_CELLS)
+        VERILOG_SOURCES += $(RAW_PDK_PRIMITIVES)
+
+        #VERILOG_SOURCES += $(CLEAN_LOCAL_CELLS)
     else
         # Gate level simulation:
         SIM_BUILD		= sim_build/gl
@@ -88,7 +94,7 @@ else ifeq ($(SIM),icarus)
         #VERILOG_SOURCES := $(filter-out $(RAW_PDK_CELLS) %sg13g2_stdcell.v, $(VERILOG_SOURCES))
         #VERILOG_SOURCES += $(CLEAN_LOCAL_CELLS
         VERILOG_SOURCES += $(RAW_PDK_CELLS)
-
+        VERILOG_SOURCES += $(RAW_PDK_PRIMITIVES)
     endif
 endif
 

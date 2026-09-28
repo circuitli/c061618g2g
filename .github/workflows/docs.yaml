@@ -24,4 +24,4 @@ jobs:
           clean: true 
 
       - name: Build docs
-        uses: TinyTapeout/tt-gds-action/docs@ttihp26b
+        uses: TinyTapeout/tt-gds-action/docs@ttgf26c

@@ -48,7 +48,7 @@ jobs:
             echo "exists=false" >> $GITHUB_OUTPUT
           fi
 
-      - name: Fetch and Link IHP PDK dev Branch Directly
+      - name: Fetch and Link PDK dev Branch Directly
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
@@ -63,19 +63,19 @@ jobs:
           
           echo "📥 Performing native source clone..."
           # 2. Clone the full repository structure to a temporary folder
-          git clone --branch dev --depth 1 --recurse-submodules https://github.com/IHP-GmbH/IHP-Open-PDK.git "$TEMP_CLONE_DIR"
-          
+          git clone --branch dev --depth 1 --recurse-submodules https://github.com/google/gf180mcu-pdk.git "$TEMP_CLONE_DIR"
+    
           echo "📁 Moving internal process folder to eliminate double nesting..."
           # 3. Move the internal process folder directly to where LibreLane expects it
-          # This extracts 'ihp-pdk_repo/ihp-sg13g2' straight to 'pdk/ihp-sg13g2'
-          mv "$TEMP_CLONE_DIR/ihp-sg13g2" "$TARGET_PDK_DIR/"
+          # This extracts 'gf180mcuD/gf180mcuD' straight to 'pdk/gf180mcuD'
+          mv "$TEMP_CLONE_DIR/gf180mcuD" "$TARGET_PDK_DIR/"
           
           # 4. Clean up the empty temporary download directory
           rm -rf "$TEMP_CLONE_DIR"
           
           # 5. Export environment tracking configurations
           echo "PDK_ROOT=$TARGET_PDK_DIR" >> $GITHUB_ENV
-          echo "PDK=ihp-sg13g2" >> $GITHUB_ENV
+          echo "PDK=gf180mcuD" >> $GITHUB_ENV
 
 
       # Hardens the macros sub-config natively
@@ -84,7 +84,7 @@ jobs:
         shell: bash
         env:
           PDK_ROOT: ${{ github.workspace }}/pdk
-          PDK_TARGET: ihp-sg13g2
+          PDK_TARGET: gf180mcuD
         run: |
           set -eo pipefail
           echo "🚀 Native macro hardening..."

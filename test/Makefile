@@ -81,7 +81,7 @@ else ifeq ($(SIM),icarus)
         # Gate level simulation:
         SIM_BUILD		= sim_build/gl
         COMPILE_ARGS    += -DGL_TEST
-        COMPILE_ARGS    += -DFUNCTIONAL -Dfunctional_primitive
+        COMPILE_ARGS    += -DFUNCTIONAL -Dfunctional_primitive -Wno-portbind
         COMPILE_ARGS    += -DSIM
 
         # this gets copied in by the GDS action workflow
